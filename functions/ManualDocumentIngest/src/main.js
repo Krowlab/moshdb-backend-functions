@@ -27,10 +27,10 @@ export default async ({ req, res, log, error }) => {
   }
 
   //Split payload and add individual entries to db
-  for (var importCreation of req.body)
-  {
-    log(importCreation.Name)
-  }
+  var payload = req.bodyRaw
+  payload.forEach((importItem) => {
+    log(importItem.name)
+  })
   
 
   // Return
