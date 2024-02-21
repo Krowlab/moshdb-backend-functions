@@ -14,6 +14,18 @@ interface Creation {
   official: boolean;
 }
 
+interface CreationImport {
+  Name: string;
+  "Author(s)": string;
+  Edition: string;
+  Party: string;
+  Type: string;
+  Notes?: string;
+  "itch.io"?: string;
+  "Physical"?: string;
+  "dtrpg"?: string;
+}
+
 interface importDocument extends Models.Document {
   content: string
 }
@@ -43,9 +55,10 @@ export default async ({ req, res, log, error }: any) => {
   }
 
   //Split payload and add individual entries to db
-  for (var entry of req.body)
+  var payloadParsed: CreationImport[] = req.body
+  for (var importCreation of payloadParsed)
   {
-    log(entry)
+    log(importCreation.Name)
   }
   
 
