@@ -35,6 +35,10 @@ export default async ({ req, res, log, error }: any) => {
     log("Debug Log enabled!")
     log("Request Body:")
     log(JSON.stringify(req.body))
+    log("Request Body Raw:")
+    log(req.bodyRaw)
+    log("Request Body Raw2:")
+    log(req.body)
   }
 
   // Parse json to Creations and add to document
