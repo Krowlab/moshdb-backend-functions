@@ -1,33 +1,41 @@
-import { Client } from 'node-appwrite';
+import { Client, Databases, Users } from 'node-appwrite';
 
-// This is your Appwrite function
-// It's executed each time we get a request
+interface Creation {
+  name: string;
+  format: string;
+  type: string;
+  description: string;
+  tags?: string[];
+  shops: string[];
+  edition: string;
+  official: boolean;
+}
+
 export default async ({ req, res, log, error }: any) => {
-  // Why not try the Appwrite SDK?
-  //
-  // const client = new Client()
-  //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(Bun.env["APPWRITE_FUNCTION_PROJECT_ID"])
-  //    .setKey(Bun.env["APPWRITE_API_KEY"]);
-
-  // You can log messages to the console
-  log("Hello, Logs!");
-
-  // If something goes wrong, log an error
-  error("Hello, Errors!");
-
-  // The `req` object contains the request data
-  if (req.method === "GET") {
-    // Send a response with the res object helpers
-    // `res.send()` dispatches a string back to the client
-    return res.send("Hello, World!");
+  // Discard wrong methods
+  if (req.method != 'POST')
+  {
+    error("Wrong Method: Use POST.")
+    return res.json({
+      success: false
+    }, 400);
   }
 
-  // `res.json()` is a handy helper for sending JSON
-  return res.json({
-    motto: "Build like a team of hundreds_",
-    learn: "https://appwrite.io/docs",
-    connect: "https://appwrite.io/discord",
-    getInspired: "https://builtwith.appwrite.io",
-  });
+  // Appwrite setup
+  const client = new Client()
+    .setEndpoint(Bun.env["APPWRITE_FUNCTION_ENDPOINT"] || '')
+    .setProject(Bun.env["APPWRITE_FUNCTION_PROJECT_ID"] || '')
+    .setKey(Bun.env["APPWRITE_FUNCTION_API_KEY"] || '');
+
+  const databases = new Databases(client)
+
+  // Debug
+  if (Bun.env["DEBUG_LOG"])
+  {
+    log("Debug Log enabled!")
+    log("Request Body:")
+    log(JSON.stringify(req.body))
+  }
+
+  // Parse json to Creations and add to document
 };
