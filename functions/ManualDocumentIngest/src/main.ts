@@ -35,7 +35,6 @@ export default async ({ req, res, log, error }: any) => {
     .setKey(Bun.env["APPWRITE_FUNCTION_API_KEY"] || '');
 
   const databases = new Databases(client)
-  const storage = new Storage(client)
 
   // Debug
   if (Bun.env["DEBUG_LOG"])
@@ -43,6 +42,9 @@ export default async ({ req, res, log, error }: any) => {
     log("Debug Log enabled!")
     log("Request Body:")
     log(req.body)
+    log(Bun.env["APPWRITE_FUNCTION_ENDPOINT"] || '')
+    log(Bun.env["APPWRITE_FUNCTION_PROJECT_ID"] || '')
+    log(Bun.env["APPWRITE_FUNCTION_API_KEY"] || '')
   }
 
   // Parse jsonImport
