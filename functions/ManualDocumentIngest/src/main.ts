@@ -41,7 +41,7 @@ export default async ({ req, res, log, error }: any) => {
   {
     log("Debug Log enabled!")
     log("Request Body:")
-    log(req.body)
+    //log(req.body)
   }
 
   // Parse jsonImport
