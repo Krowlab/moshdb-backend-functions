@@ -42,14 +42,11 @@ export default async ({ req, res, log, error }: any) => {
     log("Debug Log enabled!")
     log("Request Body:")
     log(req.body)
-    log(Bun.env["APPWRITE_FUNCTION_ENDPOINT"] || '')
-    log(Bun.env["APPWRITE_FUNCTION_PROJECT_ID"] || '')
-    log(Bun.env["APPWRITE_FUNCTION_API_KEY"] || '')
   }
 
   // Parse jsonImport
   // Get newest import file
-  const importDocuments = await databases.listDocuments(Bun.env["DATABASE_IMPORTS_ID"] || '', Bun.env["COLLECTION_IMPORTS_JSON_ID"] || '', [Query.orderDesc("$createdAt"), Query.limit(1)])
+  /*const importDocuments = await databases.listDocuments(Bun.env["DATABASE_IMPORTS_ID"] || '', Bun.env["COLLECTION_IMPORTS_JSON_ID"] || '', [Query.orderDesc("$createdAt"), Query.limit(1)])
   const importDocumentId = importDocuments.documents.at(0)?.$id
   if (Bun.env["DEBUG_LOG"])
   {
@@ -64,7 +61,7 @@ export default async ({ req, res, log, error }: any) => {
   {
     log("File content:")
     log(importJson)
-  }
+  }*/
   
 
   // Return
