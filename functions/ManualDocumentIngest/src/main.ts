@@ -1,4 +1,4 @@
-import { Client, Databases, Query, Storage, Users } from 'node-appwrite';
+import { Client, Databases, Query, Storage} from 'node-appwrite';
 
 interface Creation {
   name: string;
@@ -42,11 +42,16 @@ export default async ({ req, res, log, error }: any) => {
   // Get newest import file
   const importFile = await storage.listFiles(Bun.env["BUCKET_IMPORT_ID"] || '', [Query.orderDesc("$createdAt"), Query.limit(1)])
   const importFileId = importFile.files.at(0)?.$id
+  if (Bun.env["DEBUG_LOG"])
+  {
+    log("Found import file with ID:")
+    log(importFileId)
+  }
   // Get file content
   const fileContent = await storage.getFileView(Bun.env["BUCKET_IMPORT_ID"] || '', importFileId || '')
   if (Bun.env["DEBUG_LOG"])
   {
-    log("Found import file:")
+    log("File content:")
     log(fileContent)
   }
   
