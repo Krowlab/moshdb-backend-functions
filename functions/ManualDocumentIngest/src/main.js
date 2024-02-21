@@ -1,5 +1,4 @@
 import { Client, Databases, Query, Storage} from 'node-appwrite';
-import { parseJsonText } from 'typescript';
 
 
 export default async ({ req, res, log, error }) => {
