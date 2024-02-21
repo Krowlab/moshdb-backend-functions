@@ -38,4 +38,9 @@ export default async ({ req, res, log, error }: any) => {
   }
 
   // Parse json to Creations and add to document
+
+  // Return
+  return res.json({
+    success: true,
+  }, 200);
 };
