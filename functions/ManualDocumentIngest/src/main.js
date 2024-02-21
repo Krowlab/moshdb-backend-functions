@@ -26,7 +26,7 @@ export default async ({ req, res, log, error }) => {
   }
 
   //Split payload and add individual entries to db
-  var payload = JSON.parse(JSON.stringify(req.body))
+  var payload = JSON.parse(req.body)
   log(payload.length)
   
 
