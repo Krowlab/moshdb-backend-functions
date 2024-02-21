@@ -45,7 +45,7 @@ export default async ({ req, res, log, error }: any) => {
   //Split payload and add individual entries to db
   for (var entry of req.body)
   {
-    log(typeof req.body)
+    log(entry)
   }
   
 
