@@ -1,36 +1,8 @@
 import { Client, Databases, Query, Storage} from 'node-appwrite';
-import type { Models } from 'node-appwrite';
 import { parseJsonText } from 'typescript';
 
 
-interface Creation {
-  name: string;
-  format: string;
-  type: string;
-  description: string;
-  tags?: string[];
-  shops: string[];
-  edition: string;
-  official: boolean;
-}
-
-interface CreationImport {
-  Name: string;
-  "Author(s)": string;
-  Edition: string;
-  Party: string;
-  Type: string;
-  Notes?: string;
-  "itch.io"?: string;
-  "Physical"?: string;
-  "dtrpg"?: string;
-}
-
-interface importDocument extends Models.Document {
-  content: string
-}
-
-export default async ({ req, res, log, error }: any) => {
+export default async ({ req, res, log, error }) => {
   // Discard wrong methods
   if (req.method != 'POST')
   {
@@ -55,8 +27,7 @@ export default async ({ req, res, log, error }: any) => {
   }
 
   //Split payload and add individual entries to db
-  var payloadParsed: CreationImport[] = JSON.parse(JSON.stringify(req.bodyRaw))
-  for (var importCreation of payloadParsed)
+  for (var importCreation of req.body)
   {
     log(importCreation.Name)
   }
