@@ -1,4 +1,4 @@
-import { Client, Databases, Users } from 'node-appwrite';
+import { Client, Databases, Query, Storage, Users } from 'node-appwrite';
 
 interface Creation {
   name: string;
@@ -28,20 +28,28 @@ export default async ({ req, res, log, error }: any) => {
     .setKey(Bun.env["APPWRITE_FUNCTION_API_KEY"] || '');
 
   const databases = new Databases(client)
+  const storage = new Storage(client)
 
   // Debug
   if (Bun.env["DEBUG_LOG"])
   {
     log("Debug Log enabled!")
     log("Request Body:")
-    log(JSON.stringify(req.body))
-    log("Request Body Raw:")
-    log(req.bodyRaw)
-    log("Request Body Raw2:")
     log(req.body)
   }
 
-  // Parse json to Creations and add to document
+  // Parse json file
+  // Get newest import file
+  const importFile = await storage.listFiles(Bun.env["BUCKET_IMPORT_ID"] || '', [Query.orderDesc("$createdAt"), Query.limit(1)])
+  const importFileId = importFile.files.at(0)?.$id
+  // Get file content
+  const fileContent = await storage.getFileView(Bun.env["BUCKET_IMPORT_ID"] || '', importFileId || '')
+  if (Bun.env["DEBUG_LOG"])
+  {
+    log("Found import file:")
+    log(fileContent)
+  }
+  
 
   // Return
   return res.json({
