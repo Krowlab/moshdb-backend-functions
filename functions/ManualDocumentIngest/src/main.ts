@@ -1,4 +1,7 @@
 import { Client, Databases, Query, Storage} from 'node-appwrite';
+import type { Models } from 'node-appwrite';
+import { parseJsonText } from 'typescript';
+
 
 interface Creation {
   name: string;
@@ -9,6 +12,10 @@ interface Creation {
   shops: string[];
   edition: string;
   official: boolean;
+}
+
+interface importDocument extends Models.Document {
+  content: string
 }
 
 export default async ({ req, res, log, error }: any) => {
@@ -38,21 +45,23 @@ export default async ({ req, res, log, error }: any) => {
     log(req.body)
   }
 
-  // Parse json file
+  // Parse jsonImport
   // Get newest import file
-  const importFile = await storage.listFiles(Bun.env["BUCKET_IMPORT_ID"] || '', [Query.orderDesc("$createdAt"), Query.limit(1)])
-  const importFileId = importFile.files.at(0)?.$id
+  const importDocuments = await databases.listDocuments(Bun.env["DATABASE_IMPORTS_ID"] || '', Bun.env["COLLECTION_IMPORTS_JSON_ID"] || '', [Query.orderDesc("$createdAt"), Query.limit(1)])
+  const importDocumentId = importDocuments.documents.at(0)?.$id
   if (Bun.env["DEBUG_LOG"])
   {
-    log("Found import file with ID:")
-    log(importFileId)
+    log("Found import document with ID:")
+    log(importDocumentId)
   }
   // Get file content
-  const fileContent = await storage.getFileView(Bun.env["BUCKET_IMPORT_ID"] || '', importFileId || '')
+  const importDocument = await databases.getDocument(Bun.env["DATABASE_IMPORTS_ID"] || '', Bun.env["COLLECTION_IMPORTS_JSON_ID"] || '', importDocumentId || '') as importDocument
+  const importText = importDocument.content
+  const importJson = JSON.parse(importText)
   if (Bun.env["DEBUG_LOG"])
   {
     log("File content:")
-    log(fileContent)
+    log(importJson)
   }
   
 
