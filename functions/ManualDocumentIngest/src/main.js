@@ -101,7 +101,7 @@ export default async ({ req, res, log, error }) => {
       notes: null,
       shops: shops,
       tags: [],
-      edition: importItem.edition,
+      edition: importItem.edition.toUpperCase(),
       format: null,
       type: capitalizeFirstLetter(importItem.type),
       party: importItem.party,
