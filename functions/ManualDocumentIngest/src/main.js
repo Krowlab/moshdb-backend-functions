@@ -26,6 +26,12 @@ export default async ({ req, res, log, error }) => {
     log("Request: " + JSON.stringify(req.body))
   }
 
+  // Functions
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   //Split payload and add individual entries to db
   var payload = req.body
   
@@ -97,7 +103,7 @@ export default async ({ req, res, log, error }) => {
       tags: [],
       edition: importItem.edition,
       format: null,
-      type: importItem.type,
+      type: capitalizeFirstLetter(importItem.type),
       party: importItem.party,
     }
 
