@@ -107,7 +107,7 @@ export default async ({ req, res, log, error }) => {
     );
 
     log("Created document " + documentCreation["$id"] + " for " + importItem.name + ".")
-  });
+  };
 
   // Return
   return res.json({
