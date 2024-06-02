@@ -55,7 +55,7 @@ export default async ({ req, res, log, error }) => {
       shops.push(JSON.stringify({
         name: "DriveThruRPG",
         url: importItem.dtrpg,
-        price: "X.X",
+        price: null,
         isPhysical: false,
       }))
     }
@@ -64,7 +64,7 @@ export default async ({ req, res, log, error }) => {
       shops.push(JSON.stringify({
         name: "Itch.io",
         url: importItem.itchio,
-        price: "X.X",
+        price: null,
         isPhysical: false,
       }))
     }
