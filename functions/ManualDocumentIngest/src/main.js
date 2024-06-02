@@ -37,8 +37,16 @@ export default async ({ req, res, log, error }) => {
 
   const importDocumentData = JSON.parse(importDocument.content)
   log("Importing " + importDocumentData.length + " items.")
+  var counter = 0
+
 
   importDocumentData.forEach(async (importItem) => {
+    counter++
+    if (counter < 40)
+    {
+      log("Importing item " + counter + " of " + importDocumentData.length + ".")
+    }
+
     var shops = []
     if (importItem.dtrpg && importItem.dtrpg != "")
     {
