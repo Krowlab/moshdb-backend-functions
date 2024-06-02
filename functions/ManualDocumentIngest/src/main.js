@@ -37,14 +37,16 @@ export default async ({ req, res, log, error }) => {
 
   const importDocumentData = JSON.parse(importDocument.content)
   log("Importing " + importDocumentData.length + " items.")
+ 
+
   var counter = 0
-
-
   for (const importItem of importDocumentData) {
     counter++
-    if (counter < 10)
+
+    if (importItem.name == "")
     {
-      log(importItem)
+      log("Skipping empty item.")
+      continue
     }
 
     var shops = []
@@ -71,7 +73,7 @@ export default async ({ req, res, log, error }) => {
       shops.push(JSON.stringify({
         name: "Tuesday Knight Games",
         url: importItem.physical,
-        price: "X.X",
+        price: null,
         isPhysical: true,
       }))
     }
@@ -106,7 +108,7 @@ export default async ({ req, res, log, error }) => {
       creation
     );
 
-    log("Created document " + documentCreation["$id"] + " for " + importItem.name + ".")
+    log("Created document " + documentCreation["$id"] + ". Item " + counter + "/" + importDocumentData.length) + "."
   };
 
   // Return
