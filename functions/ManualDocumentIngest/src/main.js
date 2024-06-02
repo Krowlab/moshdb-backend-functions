@@ -40,7 +40,7 @@ export default async ({ req, res, log, error }) => {
   var counter = 0
 
 
-  importDocumentData.forEach(async (importItem) => {
+  await importDocumentData.forEach(async (importItem) => {
     counter++
     if (counter < 40)
     {
