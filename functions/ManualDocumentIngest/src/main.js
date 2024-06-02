@@ -102,6 +102,7 @@ export default async ({ req, res, log, error }) => {
     const documentCreation = await databases.createDocument(
       Bun.env["DATABASE_MOSHDATA"],
       Bun.env["COLLECTION_MOSHDATA_CREATIONS"],
+      ID.unique(),
       creation
     );
   });
