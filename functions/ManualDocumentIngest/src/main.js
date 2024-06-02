@@ -42,9 +42,9 @@ export default async ({ req, res, log, error }) => {
 
   for (const importItem of importDocumentData) {
     counter++
-    if (counter < 40)
+    if (counter < 10)
     {
-      log("Importing item " + counter + " of " + importDocumentData.length + ".")
+      log(importItem)
     }
 
     var shops = []
