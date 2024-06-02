@@ -37,7 +37,6 @@ export default async ({ req, res, log, error }) => {
 
   const importDocumentData = JSON.parse(importDocument.content)
   log(importDocument)
-  log(importDocumentData)
 
   importDocumentData.forEach(async (importItem) => {
     var shops = []
