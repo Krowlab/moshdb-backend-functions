@@ -29,7 +29,7 @@ export default async ({ req, res, log, error }) => {
   //Split payload and add individual entries to db
   var payload = req.body
   
-  const importDocument = databases.getDocument(
+  const importDocument = await databases.getDocument(
     Bun.env["DATABASE_IMPORTS"],
     Bun.env["COLLECTION_IMPORTS_JSON"],
     payload.importId
@@ -37,7 +37,7 @@ export default async ({ req, res, log, error }) => {
 
   const importDocumentData = JSON.parse(importDocument.content)
 
-  importDocumentData.forEach((importItem) => {
+  importDocumentData.forEach(async (importItem) => {
     var shops = []
     if (importItem.dtrpg && importItem.dtrpg != "")
     {
@@ -90,12 +90,11 @@ export default async ({ req, res, log, error }) => {
       party: importItem.party,
     }
 
-    const documentCreation = databases.createDocument(
+    const documentCreation = await databases.createDocument(
       Bun.env["DATABASE_MOSHDATA"],
       Bun.env["COLLECTION_MOSHDATA_CREATIONS"],
       creation
     );
-
   });
 
   // Return
