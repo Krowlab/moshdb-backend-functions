@@ -105,6 +105,8 @@ export default async ({ req, res, log, error }) => {
       ID.unique(),
       creation
     );
+
+    log("Created document " + documentCreation["$id"] + " for " + importItem.name + ".")
   });
 
   // Return
