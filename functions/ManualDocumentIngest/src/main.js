@@ -1,4 +1,4 @@
-import { Client, Databases, Query, Storage} from 'node-appwrite';
+import { Client, Databases, Query, ID, Storage} from 'node-appwrite';
 
 
 export default async ({ req, res, log, error }) => {
@@ -23,14 +23,80 @@ export default async ({ req, res, log, error }) => {
   if (Bun.env["DEBUG_LOG"])
   {
     log("Debug Log enabled!")
+    log("Request: " + JSON.stringify(req.body))
   }
 
   //Split payload and add individual entries to db
-  var payload = JSON.parse(req.body)
-  payload.forEach((importItem) => {
-    log(importItem.Name)
-  })
+  var payload = req.body
   
+  const importDocument = databases.getDocument(
+    Bun.env["DATABASE_IMPORTS"],
+    Bun.env["COLLECTION_IMPORTS_JSON"],
+    payload.importId
+  )
+
+  const importDocumentData = JSON.parse(importDocument.content)
+
+  importDocumentData.forEach((importItem) => {
+    var shops = []
+    if (importItem.dtrpg && importItem.dtrpg != "")
+    {
+      shops.push(JSON.stringify({
+        name: "DriveThruRPG",
+        url: importItem.dtrpg,
+        price: "X.X",
+        isPhysical: false,
+      }))
+    }
+    if (importItem.itchio && importItem.itchio != "")
+    {
+      shops.push(JSON.stringify({
+        name: "Itch.io",
+        url: importItem.itchio,
+        price: "X.X",
+        isPhysical: false,
+      }))
+    }
+    if (importItem.physical && importItem.physical != "")
+    {
+      shops.push(JSON.stringify({
+        name: "Tuesday Knight Games",
+        url: importItem.physical,
+        price: "X.X",
+        isPhysical: true,
+      }))
+    }
+
+    var authorsRaw = importItem.authors.split(" & ")
+    var authors = []
+    authorsRaw.forEach((author) => {
+      authors.push(JSON.stringify({
+        name: author,
+        url: null,
+      }))
+    })
+
+
+    var creation = {
+      name: importItem.name,
+      authors: authors,
+      description: null,
+      notes: null,
+      shops: shops,
+      tags: [],
+      edition: importItem.edition,
+      format: null,
+      type: importItem.type,
+      party: importItem.party,
+    }
+
+    const documentCreation = databases.createDocument(
+      Bun.env["DATABASE_MOSHDATA"],
+      Bun.env["COLLECTION_MOSHDATA_CREATIONS"],
+      creation
+    );
+
+  });
 
   // Return
   return res.json({
